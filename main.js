@@ -1,10 +1,16 @@
 const form = document.querySelector('#todo-form');
 const input = document.querySelector('#todo-input');
 const list = document.querySelector('#todo-list');
+const themeToggle = document.querySelector('#theme-toggle');
 
 const STORAGE_KEY = 'todo-items';
+const THEME_STORAGE_KEY = 'theme-preference';
+const DARK_THEME = 'dark';
+const LIGHT_THEME = 'light';
 let todos = loadTodos();
+let theme = loadTheme();
 
+applyTheme(theme);
 render();
 
 form.addEventListener('submit', (event) => {
@@ -24,6 +30,12 @@ form.addEventListener('submit', (event) => {
   input.value = '';
   saveTodos();
   render();
+});
+
+themeToggle.addEventListener('click', () => {
+  theme = theme === DARK_THEME ? LIGHT_THEME : DARK_THEME;
+  applyTheme(theme);
+  saveTheme();
 });
 
 list.addEventListener('change', (event) => {
@@ -103,6 +115,27 @@ function loadTodos() {
 
 function saveTodos() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+}
+
+function loadTheme() {
+  try {
+    return localStorage.getItem(THEME_STORAGE_KEY) === DARK_THEME ? DARK_THEME : LIGHT_THEME;
+  } catch {
+    return LIGHT_THEME;
+  }
+}
+
+function saveTheme() {
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch {
+  }
+}
+
+function applyTheme(nextTheme) {
+  document.documentElement.dataset.theme = nextTheme;
+  themeToggle.textContent = nextTheme === DARK_THEME ? 'Light mode' : 'Dark mode';
+  themeToggle.setAttribute('aria-pressed', String(nextTheme === DARK_THEME));
 }
 
 function isValidTodo(todo) {
