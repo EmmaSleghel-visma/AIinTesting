@@ -19,4 +19,5 @@ Simple todo list web app for workshop demos.
 - Add todos
 - Mark todos as completed
 - Delete todos
+- Toggle between light and dark mode
 - Todos are saved in browser localStorage
