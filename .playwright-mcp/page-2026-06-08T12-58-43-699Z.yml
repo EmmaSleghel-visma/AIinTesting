@@ -1,0 +1,9 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - heading "Todo List" [level=1] [ref=e4]
+    - button "Toggle color theme" [active] [pressed] [ref=e5] [cursor=pointer]: Light mode
+  - generic [ref=e6]:
+    - textbox "Add todo" [ref=e7]:
+      - /placeholder: Add a new todo...
+    - button "Add" [ref=e8] [cursor=pointer]
+  - list
