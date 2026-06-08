@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"No tests configured\" && exit 0",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/EmmaSleghel-visma/AIinTesting#readme",
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "vite": "^8.0.16"
   }
 }
