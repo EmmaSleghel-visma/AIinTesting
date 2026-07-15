@@ -58,4 +58,4 @@ the `test-generator` agent with this intent:
 > The test plan below has been reviewed and approved. Generate Playwright tests for each
 > scenario in the plan, one test per file, following the project's testing standards in
 > CLAUDE.md and tests/CLAUDE.md. Use the plan as the source of truth for steps and expected
-> outcomes.
+outcomes.
