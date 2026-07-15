@@ -1,0 +1,73 @@
+name: Nightly QA briefing
+
+# Scheduled agentic testing demo:
+# - cron: runs every weekday at 05:00 UTC (07:00 CEST)
+# - workflow_dispatch: lets you demo it live from the Actions tab ("Run workflow")
+#
+# Setup (one-time): add ANTHROPIC_API_KEY under Settings > Secrets and variables > Actions.
+
+on:
+  schedule:
+    - cron: "0 5 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      sabotage:
+        description: "Break a selector first, so the briefing has a real failure to triage"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  qa-briefing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Optional sabotage (demo mode)
+        if: ${{ inputs.sabotage }}
+        run: sed -i 's/id="todo-input"/id="task-input"/' index.html
+
+      - name: Run the test suite
+        run: npx playwright test --reporter=json > results.json 2>/dev/null || true
+
+      - name: Triage and publish briefing
+        uses: anthropics/claude-code-action@v1
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            You are the nightly QA triage for this repository. Read results.json
+            (Playwright JSON report). Then:
+
+            1. Summarize overall health: total / passed / failed / skipped.
+            2. For each failure: likely root cause (test stale vs app broken —
+               read the relevant source and spec before deciding), affected
+               area, and severity.
+            3. Top 3 risk areas for today's manual testing.
+            4. One recommendation.
+
+            Create a GitHub issue titled "QA briefing <today's date>" with this
+            content as markdown, labeled "qa-briefing" (create the label if
+            missing). Keep it under 300 words, no jargon — a PM must be able to
+            read it. If everything passed, still create the issue: short health
+            summary plus the top untested risk you can see in the repo.
+
+            You propose; a human disposes: do NOT modify any code or tests.
+          claude_args: |
+            --allowedTools "Read,Grep,Glob,Bash(gh issue create:*),Bash(gh label create:*),Bash(cat results.json)"
+            --max-turns 15
