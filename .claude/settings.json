@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm test*)",
+      "Bash(npx playwright test*)",
+      "Bash(npm run *)"
+    ],
+    "ask": [
+      "Bash(git push*)"
+    ],
+    "deny": [
+      "Read(.env*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import json,sys; d=json.load(sys.stdin); ti=d.get('tool_input',{}); txt=(ti.get('new_string') or '')+(ti.get('content') or ''); bad=ti.get('file_path','').endswith('.spec.ts') and 'waitForTimeout' in txt; print('BLOCKED: page.waitForTimeout() is banned in tests. Use auto-waiting assertions (await expect(locator)...) or event-based waits instead. See tests/CLAUDE.md.', file=sys.stderr) if bad else None; sys.exit(2 if bad else 0)\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import json,sys; d=json.load(sys.stdin); fp=d.get('tool_input',{}).get('file_path',''); print('[hook] ' + fp.split('/')[-1] + ' changed - run npx playwright test before committing.') if fp.endswith('.spec.ts') else None\""
+          }
+        ]
+      }
+    ]
+  }
+}

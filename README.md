@@ -1,6 +1,6 @@
 # AIinTesting
 
-Simple todo list web app for demonstrating AI-assisted testing with GitHub Copilot.
+Simple todo list web app for demonstrating AI-assisted testing with Claude Code.
 
 ## Run locally
 
@@ -29,13 +29,17 @@ npm run test:ui    # Run tests with interactive UI
 - Toggle between light and dark mode
 - Todos are saved in browser localStorage
 
-## Workshop Demo
+## Claude Code customizations
 
-This project includes comprehensive GitHub Copilot customizations for testing:
+This project is fully configured for Claude Code — run `claude` in the repo root.
 
-- **Custom Agents**: `@test-critic`, `@bug-hunter`, `@test-generator`, `@accessibility-tester`
-- **Custom Prompts**: Coverage analysis, edge case generation, test plans, debugging
-- **Skills**: Playwright E2E and Vitest unit testing knowledge
-- **Instructions**: File-pattern-specific testing guidelines
+| Customization | Location | Purpose |
+|---------------|----------|---------|
+| Project memory | `CLAUDE.md`, `tests/CLAUDE.md` | Project-wide and tests-scoped standards, always/contextually loaded |
+| Subagents | `.claude/agents/` | Testing pipeline (`requirement-critic` → `test-planner` → `test-generator` → `test-reviewer`), plus `test-healer`, `bug-hunter`, `accessibility-tester` |
+| Slash commands | `.claude/commands/` | `/analyze-coverage`, `/create-test-plan`, `/generate-edge-cases`, `/debug-failing-test`, `/review-test-quality`, `/convert-manual-to-automated` |
+| Skills | `.claude/skills/` | On-demand Playwright E2E and Vitest unit-testing knowledge |
+| Hooks & permissions | `.claude/settings.json` | Blocks `waitForTimeout` in specs, pre-approves test commands |
+| MCP server | `.mcp.json` | `playwright-test` server — agents drive a real browser |
 
-See [WORKSHOP.md](WORKSHOP.md) for full demo guide.
+See [WORKSHOP.md](WORKSHOP.md) for the full-day workshop run-book with demos and exercises.
