@@ -1,5 +1,6 @@
 ---
-description: "Playwright E2E testing patterns and best practices for web applications"
+name: playwright-e2e
+description: Playwright E2E testing patterns and best practices. Use when writing, reviewing, refactoring, or debugging Playwright tests — selector strategy, Page Object and fixture patterns, auto-waiting assertions, localStorage state seeding, and debug tooling.
 ---
 
 # E2E Testing with Playwright

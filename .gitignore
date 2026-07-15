@@ -1,2 +1,19 @@
+# Dependencies
 node_modules/
 dist/
+
+# Playwright / test artifacts (regenerated on every run)
+playwright-report/
+test-results/
+.playwright-mcp/
+
+# Local Claude Code settings (personal, per-machine)
+.claude/settings.local.json
+
+# Presenter-only materials (not part of the attendee template)
+*.pptx
+WORKSHOP-SCRIPT.md
+
+# Editor / OS cruft
+*.swp
+.DS_Store

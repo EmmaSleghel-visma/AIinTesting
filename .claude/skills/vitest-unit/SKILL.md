@@ -1,5 +1,6 @@
 ---
-description: "JavaScript unit testing patterns with Vitest for testing functions and modules"
+name: vitest-unit
+description: JavaScript unit testing patterns with Vitest. Use when writing or reviewing unit tests for functions and modules — mocking (functions, modules, timers, localStorage), assertion matchers, DOM testing with jsdom, async testing, and coverage configuration.
 ---
 
 # Unit Testing with Vitest
