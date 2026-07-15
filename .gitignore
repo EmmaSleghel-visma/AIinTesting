@@ -13,6 +13,8 @@ test-results/
 # Presenter-only materials (not part of the attendee template)
 *.pptx
 WORKSHOP-SCRIPT.md
+WORKSHOP.md
+COWORK-SETUP.md
 
 # Editor / OS cruft
 *.swp
